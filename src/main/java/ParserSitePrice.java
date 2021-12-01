@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ParserSitePrice {
     public static String pageParseDiapus() throws IOException {
@@ -22,16 +24,14 @@ public class ParserSitePrice {
         Document page = Jsoup.parse(new URL(url), 3000);
         Element price = page.select("tbody").get(10);
         Elements priceTS = price.getElementsByAttribute("nowrap");
-        List<String> list = new ArrayList<>();
-        Collections.addAll(list, priceTS.text().split(" "));
-        return list.get(1);
+        return Stream.of(priceTS.text().split(" ")).toList().get(1);
     }
 
     public static String pageParseMedMag() throws IOException {
-        String url = "https://www.medmag.ru/index.php?productID=792&from=ya";
-        Document page = Jsoup.parse(new URL(url), 3000);
-        Element price = page.select("font.price").first();
-        return price.text();
+                String url = "https://www.medmag.ru/index.php?productID=792&from=ya";
+                Document page = Jsoup.parse(new URL(url), 3000);
+                Element price = page.select("font.price").first();
+                return price.text();
     }
 
     public static void main(String[] args) throws IOException {
